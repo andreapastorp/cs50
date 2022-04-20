@@ -1,0 +1,69 @@
+#include <cs50.h>
+#include <stdio.h>
+
+
+int get_value(int finalsum);
+
+int main(void)
+{
+
+    // ask for credit card number
+    long number = get_long("Number: ");
+
+    // set variables
+    int counter = 0;
+    int sum2 = 0; // sum of every other digit starting from the last
+    int sum1 = 0; // sum of every other digit multiplied by 2 starting from the second-to-last
+
+
+    // get digits and sum according to lunh's algorithm
+    do
+    {
+        // get the last digit
+        int digit = number % 10;
+
+        // check if last or second-to-last digit
+        if (counter % 2 == 0)
+        {
+            sum2 = sum2 + digit;
+            counter++;
+
+        }
+        else
+        {
+            int digitsum = digit * 2;
+            if (digitsum > 9)
+            {
+                digitsum = digitsum % 10;
+                sum1 = sum1 + digitsum + 1;
+            }
+            else
+            {
+                sum1 = sum1 + digitsum;
+            }
+            counter++;
+        }
+        // update the number without last digit checked
+        number = (number - digit)/10;
+    }
+    while (number > 0);
+
+
+    int finalsum = sum1 + sum2;
+    printf("%i\n" , finalsum);
+
+    if (get_value(finalsum) == 0)
+    {
+        printf("Visa\n");
+    }
+    else
+    {
+        printf("Invalid\n");
+    }
+
+}
+
+int get_value(int finalsum)
+{
+    return finalsum % 10;
+}
