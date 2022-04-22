@@ -22,7 +22,7 @@ int main(void)
     int firstdigits = get_firstdigits(number, length);
 
     // Print result
-    if (checksum % 10 == true)
+    if (checksum % 10 == 0)
     {
         if (length == 15 && (firstdigits == 34 || firstdigits == 37))
         {
@@ -50,7 +50,13 @@ int main(void)
 
 long get_number(void)
 {
-    long n = get_long("Number: ");
+    long n;
+    do
+    {
+        n = get_long("Number: ");
+    }
+    while (n < 1);
+
     return n;
 }
 
