@@ -1,14 +1,36 @@
 #include <cs50.h>
 #include <stdio.h>
 
-
+int get_number(void);
+int get_sum(long number);
 int get_value(int finalsum);
 
 int main(void)
 {
 
+    long number = get_number();
+    int finalsum = get_sum(number);
+
+    if (get_value(finalsum) == 0)
+    {
+        printf("Visa\n");
+    }
+    else
+    {
+        printf("Invalid\n");
+    }
+
+}
+
+int get_number(void)
+{
     // ask for credit card number
-    long number = get_long("Number: ");
+    long n = get_long("Number: ");
+    return n;
+}
+
+int get_sum(long number)
+{
 
     // set variables
     int counter = 0;
@@ -48,20 +70,9 @@ int main(void)
     }
     while (number > 0);
 
-
-    int finalsum = sum1 + sum2;
-    printf("%i\n" , finalsum);
-
-    if (get_value(finalsum) == 0)
-    {
-        printf("Visa\n");
-    }
-    else
-    {
-        printf("Invalid\n");
-    }
-
+    return sum1 + sum2;
 }
+
 
 int get_value(int finalsum)
 {
