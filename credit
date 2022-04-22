@@ -1,80 +1,115 @@
 #include <cs50.h>
 #include <stdio.h>
 
-int get_number(void);
-int get_sum(long number);
-int get_value(int finalsum);
+long get_number(void);
+int get_length(long number);
+int get_checksum(long number, int length);
+int get_result(int finalsum, int length);
+long get_firstdigits(long number, int length);
 
 int main(void)
 {
-
+    // Ask for credit number
     long number = get_number();
-    int finalsum = get_sum(number);
 
-    if (get_value(finalsum) == 0)
+    // Get number length
+    int length = get_length(number);
+
+    // Calculate checksum
+    int checksum = get_checksum(number, length);
+
+    // Get first digits
+    int firstdigits = get_firstdigits(number, length);
+
+    // Print result
+    if (checksum % 10 == true)
     {
-        printf("Visa\n");
+        if (length == 15 && (firstdigits == 34 || firstdigits == 37))
+        {
+            printf("AMEX\n");
+        }
+        else if ((length == 13 || length == 16) && firstdigits / 10 == 4)
+        {
+            printf("VISA\n");
+        }
+        else if (length == 16 && firstdigits > 50 && firstdigits < 56)
+        {
+            printf("MASTERCARD\n");
+        }
+        else
+        {
+            printf("INVALID\n");
+        }
     }
     else
     {
-        printf("Invalid\n");
+        printf("INVALID\n");
     }
 
 }
 
-int get_number(void)
+long get_number(void)
 {
-    // ask for credit card number
     long n = get_long("Number: ");
     return n;
 }
 
-int get_sum(long number)
+int get_length(long number)
 {
-
-    // set variables
-    int counter = 0;
-    int sum2 = 0; // sum of every other digit starting from the last
-    int sum1 = 0; // sum of every other digit multiplied by 2 starting from the second-to-last
-
-
-    // get digits and sum according to lunh's algorithm
+    int i = 0;
     do
     {
-        // get the last digit
-        int digit = number % 10;
-
-        // check if last or second-to-last digit
-        if (counter % 2 == 0)
-        {
-            sum2 = sum2 + digit;
-            counter++;
-
-        }
-        else
-        {
-            int digitsum = digit * 2;
-            if (digitsum > 9)
-            {
-                digitsum = digitsum % 10;
-                sum1 = sum1 + digitsum + 1;
-            }
-            else
-            {
-                sum1 = sum1 + digitsum;
-            }
-            counter++;
-        }
-        // update the number without last digit checked
-        number = (number - digit)/10;
+        number = number / 10;
+        i++;
     }
     while (number > 0);
 
-    return sum1 + sum2;
+    return i;
 }
 
-
-int get_value(int finalsum)
+int get_checksum(long number, int length)
 {
-    return finalsum % 10;
+    // Set variables
+    int sum = 0;
+
+    // Sum digits according to algorithm
+    for (int i = 0; i < length; i++)
+    {
+        // Get the last digit
+        int digit = number % 10;
+
+        if (i % 2 == 0) // Checks if last or second-to-last
+        {
+            // Sum digits
+            sum = sum + digit;
+        }
+        else
+        {
+            // Sum digits of digit multiplied by 2
+            int digitsum = digit * 2;
+            if (digitsum > 9)
+            {
+                sum = sum + digitsum % 10 + 1;
+            }
+            else
+            {
+                sum = sum + digitsum;
+            }
+        }
+        // Update the number without last digit checked
+        number = (number - digit) / 10;
+    }
+
+    return sum;
+}
+
+long get_firstdigits(long number, int length)
+{
+    long power = 10;
+    for (int i = 1; i < length - 2; i++)
+    {
+        power = power * 10;
+    }
+
+    return number / power;
 }
