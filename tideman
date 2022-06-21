@@ -216,7 +216,7 @@ bool check_cycle(int winner, int loser)
     {
         if (locked[loser][i] == true)
         {
-            recursion(winner,i);
+            check_cycle(winner,i);
             break;
         }
     }
