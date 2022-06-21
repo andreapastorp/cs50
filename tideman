@@ -217,7 +217,6 @@ bool check_cycle(int winner, int loser)
         if (locked[loser][i] == true)
         {
             check_cycle(winner,i);
-            break;
         }
     }
 
@@ -244,17 +243,16 @@ void print_winner(void)
     {
         for(int j = 0; j < candidate_count; j++)
         {
-            if(locked[j][i] == false_count)
+            if(!locked[j][i])
             {
                 false_count++;
             }
+            if(false_count == candidate_count)
+            {
+                printf("%s\n", candidates[i]);
+                return;
+            }
         }
-        if(false_count == candidate_count)
-        {
-            printf("%s\n", candidates[i]);
-            return;
-        }
-
     }
     return;
 }
